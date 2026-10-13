@@ -1,88 +1,87 @@
-# Dinosaur Command — Game Design Brief v0.2
+# DinoGame — Game Design Brief v3
 
-**Status:** preliminary design decisions. All mathematical balance values and move lists below are *original proposed prototype numbers*, not verified statistics from any earlier game.
+**Status:** Collaborative design decisions, with unsettled mechanics clearly marked. This is an original Roblox game inspired by real-time dinosaur command combat. Do not use licensed Jurassic Park characters, marks, assets, maps or story.
 
-## Non-negotiable game pillars
-1. **Agent fantasy.** A human field agent finds a technological controller to communicate with and command prehistoric animals. A conspiracy involving artificial control implants provides a narrative throughline. The player directs an animal, rather than controlling its body directly.
-2. **Continuous real-time one-on-one combat.** The combat simulation does not alternate turns. The player chooses one of **Offensive / Neutral / Defensive / Flanking** stances and directs available attacks, while the dinosaur automatically moves and fights. The user chooses when to Rest between moves. All combat, targeting and resource calculations are server-authoritative.
-3. **Finite team each run.** Each run starts with a choice of **Deinonychus** or **Gallimimus**. A run can contain no more than **five** owned dinosaurs, while the full game has **twelve playable dinosaur species**. Do not make all twelve automatically recruitable in every run.
-4. **Irreversible learning opportunities.** A completed encounter credits the dinosaur that wins it. Other roster dinosaurs miss their opportunity to earn a combat skill from that unique opponent. There is no catch-up system that always unlocks every move.
-5. **Randomized skill progression.** Skill acquisition is determined by a seeded random roll, filtered by species-compatible move pools and scaled by how threatening the opponent is relative to the winning dinosaur at battle start. Trivial opponents never award skills/DNA progression. Skill offers are not guaranteed on qualifying victories.
-6. **Move slots/lineages.** Each dinosaur may have at most **five equipped combat skills**. The potential skill pool per species is larger than five. Some are explicit upgrades that replace the prior tier of the same move lineage. Universal controls (Rest / stance / Dodge if implemented) do not occupy one of five attack slots. If a non-lineage move is obtained with slots full, require an explicit replacement choice.
-7. **Skill-specific DNA puzzles.** Every offensive move has its own grid, optimized with finite DNA polyomino pieces obtained during the run. Pieces affect that move's **Damage, Effort, Accuracy**, and sometimes secondary effects. Pieces cannot be duplicated across moves.
-8. **Permanent island, variable encounters.** The geographic world, biomes, major paths, landmarks, research stations and story locations remain **the same on every run**. Vary the **number, location, composition, rarity, and enhanced/wild status** of opponents via seeded encounter placement in authored spawn zones. Do NOT generate a different island or randomize world geometry between runs.
-9. **Persistent discovery, run-specific strength.** Preserve discovered species (field guide and eligibility for future recruitment), story information, journal entries and carefully chosen other metaprogression between runs. Reset each run's *owned five-dinosaur team*, acquired combat skills, move DNA layouts/pieces and encounter allocation. Permanent power upgrades may exist, but must have limits and must not trivialize early encounters or make new players uncompetitive. Treat permanent passive boosts as a later design decision requiring balancing.
-10. **Optional analysis goggles.** A findable/equippable **scanner goggles** or analysis visor item can indicate whether the current enemy has a chance to teach a particular dinosaur in the player's party a skill. They should reveal eligible roster species and approximate potential, **not promise a guaranteed unlock**. Before finding goggles, players can learn from observation, scouting and experimentation. This is a discovery tool, not a paywall.
+## 1. Premise and core gameplay
+A human agent discovers a technology capable of communicating with and commanding dinosaurs. Exploring a fixed island, the agent confronts natural dinosaurs and modified/implanted dinosaurs controlled by an antagonist. Combat is **continuous real-time 1v1**, never turn-based. During battles, the player selects Offensive, Neutral, Defensive and Flanking stances and issues attack commands; the dinosaur moves autonomously rather than being directly WASD-driven. Player timing of **Rest** between actions is integral.
 
-## Dinosaur roster (12 playable)
-| Species | Role / tactical feel | Classification note |
-|---|---|---|
-| Deinonychus | Fast flank attacks; high dodge/attack speed and efficient stamina cycling | Feathered predatory dromaeosaurid; starter |
-| Gallimimus | Extremely mobile, evasive, low-damage attrition and quick recovery | Ornithomimid omnivore; starter |
-| Dilophosaurus | Fast reach attacks, spacing and interruption | No natural venom-spitting/frill assumptions |
-| Stegosaurus | Tail-spike deterrence, area denial, committed counterattacks | Herbivore |
-| Triceratops | Head-on armor, horns, charges; vulnerable to rear/side angles | Herbivore |
-| Ankylosaurus | Heavy defense, powerful tail-club response, slow maneuvering | Herbivore |
-| Tyrannosaurus | Very strong bite, high burst and stagger; long effort/recovery commitment | Large predator |
-| Spinosaurus | Extended reach and environmental versatility, but not magical swimming advantages | Predatory theropod |
-| Allosaurus | Flexible midsize-to-large combo specialist | Predatory theropod |
-| Parasaurolophus | Mobile hadrosaur with defensive spacing and kicking attacks | Hadrosaurid herbivore |
-| Brachiosaurus | Extreme mass/reach, stomps and endurance; slow windups/turning | Sauropod herbivore; model last |
-| Giganotosaurus | Long-reach sustained attack pressure versus T. rex burst identity | Carcharodontosaurid predator |
+Each offensive skill visibly has **Damage**, **Effort** (stamina cost) and **Accuracy**, alongside configurable range, windup/startup, strike window, recovery, cooldown and effect tags. Health, stamina, positioning, dodging and armor affect combat. Skill-specific DNA polyomino puzzles modify each move rather than simply leveling a dinosaur.
 
-The twelve above are **six broadly predatory theropods plus six non-predatory/omnivorous species** (the ornithomimid is an omnivore; precise trophic classifications should remain scientifically honest). Keep model and movement physiology informed by paleontology while granting fictional tactics explicitly where necessary.
+## 2. Species and run limits
+Twelve playable dinosaur species:
+- Deinonychus (starter; scientifically informed equivalent of the fictional oversized Velociraptor)
+- Gallimimus (starter; omnivorous ornithomimid)
+- Dilophosaurus
+- Stegosaurus
+- Triceratops
+- Ankylosaurus
+- Tyrannosaurus
+- Spinosaurus
+- Allosaurus
+- Parasaurolophus
+- Brachiosaurus
+- Giganotosaurus
 
-**Nonplayable prehistoric reptiles:** Pteranodon (a pterosaur) and Mosasaurus (a mosasaurid squamate) are biome threats or special encounters. Neither is a dinosaur. Do not build flight/swimming player controls in MVP.
+Two non-playable prehistoric reptiles may appear as world threats or set pieces: Pteranodon (pterosaur) and Mosasaurus (marine squamate); neither is a dinosaur. Avoid unsupported natural venom/frill abilities for Dilophosaurus. Keep biological claims grounded and label fictional mechanics as fictional.
 
-**Hadrosaur decision:** Parasaurolophus is selected for the distinct silhouette and familiar crest. **Iguanodon** is a good possible swap when emphasis is on combat (thumb spike), but it is not a hadrosaurid. Shantungosaurus creates more overlap with Brachiosaurus's enormous-size identity.
+**Every new run** begins with a choice between Deinonychus and Gallimimus. The run roster holds at most **five dinosaurs** and never offers automatic possession of every available species. Each dinosaur has at most **five equipped offensive/combat skills**; the learnable pool is larger. Explicit upgrade lineages replace weaker versions within a slot. Stances, Rest and universal defensive controls do not count toward this cap.
 
-## Character stats, size trade-offs and commands
-- Base dinosaur properties: **Health, maximum Stamina, Armor, movement speed, turn rate, Dodge, stamina regeneration/rest recovery, and attack-animation timing**. These depend on species, then may be altered by authored equipment/upgrade mechanics later.
-- Every move exposes the original-inspired visible triad: **Damage**, **Effort** (stamina consumption), **Accuracy** (hit chance). Also define Range, Windup, Active Window, Recovery, Cooldown, Allowed Stances, tags and effects.
-- **Small dinosaurs must remain competitively valuable.** In the initial balancing philosophy they generally have **better stamina efficiency**, **faster attacks / shorter windup and recovery**, **higher dodge potential**, and better maneuverability. Larger dinosaurs generally gain **health, armor, reach and per-hit force**, with slower attacks and more stamina-consuming commitments. These are balancing tendencies, not rigid rules; upgrades can enhance an individual animal's attributes.
-- **Manual Rest is essential.** A player must plan Rest windows between attacks based on opponent posture, recovery windows and danger. Do not quietly replace it with automatic stamina recovery that removes the tradeoff. Small dinosaurs may recover faster or spend less per move, but still need to make decisions about Rest.
-- Offensive: close distance and look for an attack lane. Neutral: balanced distance/defense. Defensive: open distance or hold defensible angles; enable rest/dodge. Flanking: work toward rear/side with higher movement commitment. Keep all responsive as time advances.
-- For MVP combat, 1 player-ordered dinosaur versus 1 opponent. Select team dinosaur before encounters; do not add mid-fight roster switches in the prototype.
-- Server tracks state: idle, navigating, windup, strike, recovery, resting, dodging, stunned, defeated. Enemy chooses attacks autonomously. Explicit visuals must communicate windup, strike, miss, and recovery.
-- Balance must not be mass = strictly better. A well-trained Gallimimus or Deinonychus should counter some larger species situationally without unrealistically claiming equal physical strength or bite force.
+## 3. Hidden irreversible opponent rewards — agreed rules
+- A one-time encounter is **irreversibly consumed after its victory**. Only the winning dinosaur receives a chance to learn from that opponent. Other dinosaurs have permanently missed that specific opportunity *within the current run*, even if the winning dinosaur's reward roll fails.
+- The player must **not know in advance** which dinosaur can learn from an enemy, nor precisely what will be learned. No universal analysis goggles, learning compatibility previews, guaranteed drop labels or predictable prebattle reward charts. Discovery and uncertainty are central.
+- Almost **any dinosaur should be able to benefit from most reward-eligible opponents**. Compatibility generally changes the *nature of the possible skill* rather than locking a reward to a single winning species. Some carefully authored dinosaur-vs-dinosaur interactions may have special outcomes.
+- Model three DISTINCT dimensions rather than a single level-based loot table:
+  1. **Intrinsic opponent formidability:** strength/rarity of the opponent on its own, independent of the player's fighter; affects potential skill quality/type and ceiling.
+  2. **Relative threat:** opponent threat compared with the *particular dinosaur entering battle*, using a frozen prebattle evaluation; controls reward eligibility and probability. Trivial opponents grant **no skill/DNA build progression**.
+  3. **Compatibility:** opponent traits, winning species, known moves and specially authored species/skill interactions; chooses the available rewards, usually permissively.
+- Rewards are stochastic with reproducible run-seeded RNG; ordinary victories do **not** automatically grant skills. Scripted exceptions/guarantees may exist but require explicit design sign-off and are not disclosed as a generic prebattle hint.
+- Exact threshold ratios, reward probabilities, skill tiers, reward-vs-DNA weights and eligibility tables are **UNDECIDED**. Do not hardcode earlier illustrative numbers as canonical. Test distributions across seeds and winning species.
+- Prevent mandatory encounter softlocks from missed random skills using baseline capabilities, accessible opportunities or alternative routes. Do not simply guarantee collection of every high-tier move.
 
-## Example progression tuning (original design; not canonical historical data)
-Let `threatRatio = effectiveEnemyThreat / effectivePlayerThreatAtBattleStart`.
-- `<0.85`: 0% progression (trivial).
-- `0.85–1.04`: 20% progression reward.
-- `1.05–1.39`: 45% progression reward.
-- `1.40–1.79`: 65% progression reward.
-- `>=1.80`: 80% progression reward.
-These thresholds are only initial hypotheses. Threat can combine effective HP, armor, animation speed, dodge, stamina economy, move loadout and encounter buffs. Freeze threat estimate when battle starts, so players cannot intentionally deplete their HP to manipulate reward odds. Seed every roll and log it for testing.
+## 4. Large-vs-small dinosaur power hierarchy — agreed
+**Large dinosaurs must be decisively stronger in direct combat.** Even a maximally developed Deinonychus should have extremely little chance against a Tyrannosaurus in a straightforward fight. It should not be mathematically impossible to pull off a rare upset through exceptional play and conditions, but a balanced 50/50 duel is explicitly NOT a goal.
 
-If an encounter gives a progression reward, choose from eligible **skill offer / upgrade offer / DNA piece**, with configurable drop weights. Never fake a roll when no skill is eligible. A one-time encounter is consumed after victory whether or not its learning roll succeeds; this makes irreversible choice real, but may need clarity and playtest tuning.
+Smaller dinosaurs usually have superior dodge, movement/turn agility, fast move startup and recovery, and stamina efficiency. The player still decides when to Rest. Bigger dinosaurs gain overwhelming HP, impact, reach, physical damage, armor and stagger strength. Bounded individual upgrades are possible **inside one run**, but they do not remove the size hierarchy.
 
-## Analysis goggles (not necessarily in the first prototype)
-- Item can be discovered in a designated hand-built story location or through a carefully authored optional exploration objective. Keep placement stable unless designers deliberately vary it.
-- On inspecting a live enemy, server evaluates **each dinosaur currently in the team** for *potential* to learn something if it wins. Output might be `Possible skill potential`, `Already knows likely compatible lineages`, `Enemy too weak`, or `Unknown signal` rather than exposing the exact random result.
-- An **enhanced/chipped** enemy may unlock additional insight (e.g. implant severity). This should fit the story but not conflate scanner eligibility with guaranteed acquisition.
-- Players retain discovery of the scanner in their journal across runs; whether the physical visor must be found again is a separate choice (initial recommendation: keep its information unlock persistently after discovery, with a potentially upgradable visor later).
+Small dinosaurs retain vital **noncombat exploration roles**: narrow tunnels/mazes, narrow ledges, weight-limited bridges and sinking ground/swamps. Large dinosaurs can smash obstructions, perform high-strength navigation tasks, cross demanding terrain or river obstacles and reliably fight giant opponents. A five-dinosaur team must not become permanently trapped by choosing an unfortunate composition. Exploration gates must have fair access/recruitment or alternative solutions.
 
-## Skill-specific DNA board
-- Initial placeholder board: **5x5** on each offensive move, subject to subsequent tuning. Each piece consists of integer-offset grid cells and unique run-owned piece instance ID; supports quarter-turn rotation and moving/removing.
-- Give pieces trade-offs: e.g. +8 Damage, +3 Effort, -4 Accuracy; or +7 Accuracy, -2 Damage, -1 Effort. Define caps/floors in one module, especially for accuracy and effort.
-- Client previews stat changes; server validates ownership, board bounds, unique piece use, overlap, rotation, modifiers and commit. No two skills can use the same piece instance simultaneously.
-- Upgraded move lineage should inherit the previous board investment without deleting pieces; a new board shape/special cells could be a future explicit upgrade mechanic. Five slots remains a hard cap.
+## 5. Armored Ankylosaurus, Piercing and Crushing — agreed concept
+When its armor is protecting an area, Ankylosaurus takes **no ordinary HP damage** from regular attacks to that armored area. Rare explicitly named skill types can bypass:
+- **Piercing**: typically higher accuracy, lower damage, penetration of armored regions.
+- **Crushing**: typically high damage, lower accuracy and/or high Effort plus long commitment; penetrates armored regions.
 
-## Fixed-map seeded encounter variation
-- Build **authored terrain and landmarks** once: forests, wetland, grassland, highland, labs and storyline locations as needed. Major paths and obstacles never procedurally change per run.
-- Each spawn location has constraints: `biome`, `eligibleSpecies`, `maxThreat`, `minThreat`, `enhancedAllowed`, `exclusionRadius`, `storyPhase`, and `respawnPolicy`.
-- Use the run seed to select encounter count, composition and placement per zone. Avoid overlaps, unreachable locations, critical story blocks, unfair starter-zone apex spawns, and too-few reward-eligible fights.
-- Unique key opponents/bosses can be fixed to story locations while optional/random encounters move among authored sites.
-- For early prototype this is **not implemented yet**, but the run model should eventually make reproducing an encounter placement from its seed straightforward.
+The attack name should visibly contain Piercing or Crushing (e.g. Piercing Thrust, Crushing Bite) so players can understand counterplay without being shown skill reward compatibility.
 
-## Persistence
-- **Persistent across runs:** species sightings/discoveries, permanent recruitment eligibility/unlocks as authored, story chapter flags, logbook entries, scanned enemy knowledge, optional cosmetics and a small number of carefully balanced achievements/upgrades.
-- **Reset each run:** owned team (max 5), earned moves and move upgrades, all DNA pieces and fitted layouts, current run encounter roster/spawn locations, HP/Stamina, victory/loss state, per-run scanner loadout where appropriate.
-- Persistence implementation is later scope; start with schema and tests before DataStore use. Include explicit migration/version handling and robust save-failure handling.
+**NOT YET DECIDED:** exact armor coverage, weak points, stance interaction, whether positional gaps permit some normal hits, rarity and availability of the two counters, and interactions with other armored dinosaurs. Do not make mandatory fights unwinnable if the team lacks a rare learned counter. Do not extrapolate universal invincibility to all armored species.
 
-## Original game verification caution
-Reference inspiration: the 2002 Jurassic Park: Dinosaur Battles displayed move **Damage / Effort / Accuracy**, Health/Stamina, stances and attack commands. No authenticated full canonical stats table or exact reward RNG has been established in this design package. **Do not claim prototype figures match the original**. Our game must be an original work, not an unlicensed remake.
+## 6. Distinctive species abilities — only a possibility
+Species-specific innate or exploration abilities are welcome. Parasaurolophus might detect distant chip-controlled dinosaur signals or warn of danger, as an original **fictional game ability** loosely inspired by plausible acoustic signaling through its crest. It must **not identify skill-eligible species or loot outcomes**. This ability is **not approved or finalized** and must not be implemented during the first prototype.
 
-## Out of scope for first executable prototype
-No professional animal models, no full open world, no scanner, no DNA editor, no unlock RNG, no persistence, no twelve-species balance, no procedural map creation, no large-scale multiplayer, no story cutscenes and no flying/swimming mounts. First prove stance-driven real-time combat using two placeholder dinosaurs in a single arena.
+## 7. DNA customization and move upgrades
+Each offensive skill has an independent puzzle board (an initial 5x5 is a *prototype choice*). DNA polyomino pieces are earned only within the run, have unique instance IDs and shape offsets, and can be rotated, placed, removed and reassigned legally. Modifiers adjust that skill's Damage/Effort/Accuracy and possibly status/damage-class traits with interesting tradeoffs.
+
+The shared piece inventory is finite; one piece cannot be fitted to multiple boards simultaneously. Server validates ownership, shape, rotation, non-overlap, board bounds and caps/floors. Decide whether upgraded skills preserve fitted layouts or remap their pieces before Phase 3.
+
+## 8. World: hand-authored geography, variable encounters
+The geography of the island is **identical between runs**: biomes, terrain, rivers, paths, permanent buildings and research facilities stay in their authored locations. Do **not** procedurally generate/rearrange the landscape. Seeded run variation changes the **number and location of unscripted enemies** across ecological, difficulty and navigationally valid spawn nodes (types/variants may vary if approved). Some story-critical scripted opponents **always appear** in fixed situations. Ensure safe start areas, navigable encounters and coherent biome placement.
+
+## 9. Persistence: knowledge only, never power
+On starting a new run, completely reset dinosaur ownership/team, learned/equipped skills, upgrades, DNA pieces and layouts, items/equipment that give power, levels/stats, encounter states and all other mechanical progression.
+
+Persist only an **informational journal** that can be read across runs:
+- observed/discovered species and scientifically grounded field-guide information;
+- story logs, learned plot information and past run notes;
+- skills genuinely **discovered or used**, their already-observed effects and optionally the opponent/context of that discovery.
+
+A discovered species is **not** a permanently owned or automatically recruitable dinosaur. A recorded skill is **not** an unlocked future skill or an accurate table of all possible enemy drops. Never expose unseen compatibility or precise unrevealed probabilities in the journal.
+
+## 10. Before later phases: unresolved design questions
+1. Reward chance curve, opponent formidability tiers, compatible reward generation, exceptional guaranteed pairings.
+2. Armor hit regions/weak spots, skill tags beyond Piercing/Crushing, availability of mandatory counters.
+3. Parasaurolophus (and other dinosaur) special abilities.
+4. Exploration/party gates and prevention of five-dinosaur-roster softlocks.
+5. Persistent journal disclosure policy and DNA-board handling on lineage upgrades.
+
+**Historical reference caution:** the 2002 game inspires real-time command battle, stances and visible Damage/Effort/Accuracy. We have not authenticated its full numerical species/move database or exact RNG formula. All numbers introduced during prototyping must be labeled original provisional tuning, not asserted as canonical.
+
+**Immediate implementation boundary:** Begin only with a small one-arena, two-placeholder dinosaur combat prototype. No progression, skill drops, armor special rules, DNA editor, save system, scanner, full island or story yet.
