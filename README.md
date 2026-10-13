@@ -1,23 +1,17 @@
-# Dinosaur Command — Codex Starter v2
+# DinoGame — Codex Starter v3
 
-This is a **game-design and implementation-instructions bundle**, not finished Roblox gameplay code. It is a starting point for a two-person development team using Roblox Studio, Codex, Git and (optionally) Rojo.
+This repository currently contains design and coding instructions for an **original Roblox real-time dinosaur-command adventure**, not finished playable code.
 
-## Quick start
-1. Extract this folder into a **new Git repository**, preserving the names and paths of the files.
-2. Install Roblox Studio and Git. For a file-based Luau workflow, install and configure Rojo, then connect it to your Studio place. Rojo is optional if you have a different tested Studio synchronization workflow.
-3. Open the repository with Codex; ask it to read `AGENTS.md`, `GAME_DESIGN_BRIEF.md`, `IMPLEMENTATION_PLAN.md`.
-4. Paste the instructions in `CODEX_START_PROMPT.md` to Codex. This asks for **Phase 0 and Phase 1 only**.
-5. Launch the resulting Roblox place in Studio and manually verify the checklist Codex creates. Do not proceed to DNA puzzles until the real-time command combat is enjoyable and reliable.
+## Read in order
+1. [Game design brief](GAME_DESIGN_BRIEF.md): approved gameplay pillars and expressly unresolved design.
+2. [Implementation plan](IMPLEMENTATION_PLAN.md): eight development phases and Studio playtest gates.
+3. [Codex instructions](AGENTS.md): coding and scope rules.
+4. [First Codex prompt](CODEX_START_PROMPT.md): exactly what to ask Codex to implement first.
 
-## Files
-- `AGENTS.md`: persistent coding conventions and safeguards for Codex.
-- `GAME_DESIGN_BRIEF.md`: authoritative design decisions, including the collaborator's latest revisions.
-- `IMPLEMENTATION_PLAN.md`: milestones and test/playtest gates.
-- `CODEX_START_PROMPT.md`: first prompt to paste into Codex.
-- `CHANGELOG.md`: explicit changes from v1 to v2.
+## First development step
+Connect this GitHub repository to Codex, ask it to read the documents, and paste the contents of CODEX_START_PROMPT.md. Request Phase 0–1 only. Codex should scaffold the typed Luau project and document Git/Rojo/Studio synchronization. Follow those instructions to run and manually test the prototype **before** approving Phase 2.
 
-## Core principle
-The user is a **human agent remotely commanding a dinosaur** in **continuous real-time combat** with four stances and selected attacks. Skill acquisition is run-specific, probabilistic, and determined by opponents worth fighting. Each offensive skill has its own DNA block puzzle. It is **not turn based** and the player **does not steer the dinosaur directly in combat**.
+## Current v3 gameplay decisions
+Combat is real-time, command-driven 1v1, not WASD or turn-based. The roster targets twelve playable dinosaurs, max five owned per run, max five equipped attacks each. Learning opportunities are random, **hidden and irreversibly consumed by victories**; reward formidability, relative threat and compatibility are separate. Large dinosaurs greatly outperform small ones in direct combat, while small dinosaurs enable narrow/fragile-ground exploration. Ankylosaurus armored areas resist normal attacks and rare named Piercing/Crushing moves counter them. Island geography is fixed, with random unscripted opponent spawns and fixed story encounters. On a new run **all mechanical power resets**; only observed species/skills and story knowledge persist in the journal. No advance eligibility scanner is planned.
 
-## Originality
-Create an original game, title, island, characters, animal-control device and artwork. Do not copy licensed Jurassic Park branding, characters, source art or distinctive story details. The historical 2002 game can be discussed as inspiration in development documents only.
+See CHANGELOG.md for version history. All precise balance numbers and unresolved abilities are provisional until designed and playtested.
