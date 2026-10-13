@@ -1,49 +1,30 @@
-# Dinosaur Command — Implementation plan and gates
+# DinoGame — Phased development and playtest plan v3
 
-Every phase has a human-reviewed, playable exit criterion. Code generation is not a substitute for inspecting, balancing and playtesting inside Roblox Studio.
+Every stage must pass human Roblox Studio review before the next begins. Numbers below are testing targets, not predictions of success.
 
-## Phase 0 — Project/toolchain
-**Implement:** Git repository, Roblox Studio place, Rojo-compatible file layout, readme, simple test harness.
-**Test:** Two collaborators clone, sync and launch the same code into Studio with no unexplained errors. Verify server and client actually exchange input/state.
+## Phase 0 — Setup and handoff
+Initialize Rojo-compatible typed Luau project, Roblox Studio workflow, source layout and clear README. **Gate:** both collaborators can sync/open/play an empty project without errors.
 
-## Phase 1 — Real-time command combat (first requested Codex task)
-**Implement:** Flat test arena; two labelled primitive dinosaur placeholders (Deinonychus ordered by human, Gallimimus AI); stance buttons (Offensive/Neutral/Defensive/Flanking); Bite, Swipe, Rest; server-authored combat HP/Stamina; Damage/Effort/Accuracy and move windup/recovery/cooldown; autonomous position AI; hit/miss feedback; victory/defeat and restart.
-**Unit tests:** stamina cannot go negative; illegal attacks rejected without HP/stamina effects; accuracy clamped; armor handling; cooldown checks; battle result resolves once.
-**Playtest:** ~20 full battles. Stances should feel recognizably distinct, manual Rest timing should matter, all commands should be responsive and combat should not stall because of pathing/AI.
-**Gate:** 3–5 novices can win/lose and understand commands without an explanation; combat feels worth improving, not just passable.
+## Phase 1 — Real-time command combat (first Codex task)
+One flat arena: player-directed Deinonychus vs AI Gallimimus, basic placeholder rigs. Four stances; Bite, Swipe, timed Rest; HP/Stamina, Damage/Effort/Accuracy, hit/miss, attack windup/recovery/cooldown, AI and restart. **Gate:** about 20 completed battles and 3–5 novice testers; stances visibly distinct, Rest meaningful, no AI deadlocks or double attacks.
 
-## Phase 2 — Per-move DNA puzzles
-**Implement:** 5x5 puzzle board for each of two attacks; 5–8 unique finite pieces; drag/drop/rotate/remove, stats preview and server validation. Moves have different trade-offs.
-**Unit tests:** all four rotations; no overlap, out-of-bounds placements or double ownership; reload/rebuild the exact state; modifiers cannot bypass min/max rules.
-**Gate:** players can articulate a reason to choose different layouts and do not simply fill the board with universally superior pieces.
+## Phase 2 — DNA per skill
+Prototype individual move boards (5x5 provisional), limited shared polyomino inventory, rotate/place/remove, stat preview, server checks. **Gate:** boundary and rotation tests; cannot duplicate pieces or create invalid layouts; builds offer real statistical tradeoffs.
 
-## Phase 3 — Skill acquisition and run-specific decisions
-**Implement:** seeded reward chances scaled by prebattle relative threat; trivial enemies give no progression; one-time opponent learning chance consumed on victory; winning species alone eligible; five attack skill slots; replacement upgrade lineages; DNA-piece drops and encounter/reward log. Starter selection between Deinonychus/Gallimimus.
-**Tests:** fixed-seed reproduction, eligibility and threshold edge cases, reward assignment to actual winning species, no duplicate rewards, no reward on failure or weak opponents, correct lineage replacement, legal five-slot operations.
-**Gate:** at least 25–50 repeated test runs create varied viable combat builds and meaningful missed opportunities, without routinely ending runs because of one unlucky reward roll.
+## Phase 3 — Hidden irreversible learning rewards
+Implement seeded one-time encounters and reward outcomes using **intrinsic opponent formidability**, **relative threat to the winning dinosaur**, and **species/skill compatibility** separately. Trivial fights give nothing; most meaningful opponents potentially teach most species; no prebattle species/reward reveals. Five skill slots, tier upgrades replacing predecessors. **Gate:** deterministic test seeds, no rerolls/duplicates, 25–50 trial runs show varied and mostly completable builds. Finalize probabilities with designers first.
 
-## Phase 4 — Four-species team test
-**Implement:** Deinonychus, Gallimimus, Triceratops and Allosaurus (all placeholders); recruit/rescue system; up to five slots (only four available yet); unique species roles and counters.
-**Tests:** matchups with smaller faster dodge-capable species versus larger slower heavy hitters. Verify Rest/effort economy matters; no species is strictly dominated. Ensure permanent upgrades, if introduced, do not erase these trade-offs.
-**Gate:** testers give different defensible choices about which dinosaur should face a scarce skill-bearing foe.
+## Phase 4 — Size asymmetry, armor and counterplay
+Add representative giant and Ankylosaurus placeholders; calibrate giant-vs-small imbalance, smaller animal speed/dodge/stamina efficiency and run-only upgrades. Rare plainly named Piercing/Crushing move types bypass protected Ankylosaurus armor. **Gate:** huge species consistently dominate small in straight fights, extraordinary upsets remain possible; standard hits do not damage armored regions, special hits work and no required encounter lacks a counter. Design exact armor hit zones before coding.
 
-## Phase 5 — Fixed world + variable encounters + story slice
-**Implement:** A small **hand-authored and unchanged** reserve landscape, fixed labs/paths/biome boundaries, 10–20 vetted spawn zones. For each seeded run vary enemy quantity/placement/threat and chip status. Intro device discovery, one transmitter facility, one narrative goal, minimal journal. Optional scanner goggles to reveal which *party species might learn* from a particular enemy; make non-guarantee explicit.
-**Tests:** 100+ generated encounter layouts: path reachable, no overlapping wildlife, no boss in safe start zone, fixed geography identical across seeds; scanner displays eligibility consistent with reward rules.
-**Gate:** repeat same map on different seeds and get different tactical and progression decisions without feeling random or unfair.
+## Phase 5 — Fixed island and encounter generation
+Author persistent geographic biomes, narrow/sinking routes for small dinosaurs, strength barriers/crossings for large, 5-dinosaur team safeguards; place seeded variable enemy numbers/locations at audited nodes; fixed scripted encounters always fire. **Gate:** 100 distinct seeds leave geography unchanged and maintain reachable goals and valid spawn locations; no party composition softlocks.
 
-## Phase 6 — Persistence and complete core content
-**Implement:** Versioned persistent profile (species discoveries, story/lore/journal, scanner knowledge, approved long-term upgrades) separated from disposable run state. Save/resume rules, run reset. Continue roster toward all twelve species and build unique attack animations/rigs in waves.
-**Tests:** migrate old profile formats, handle failed datastore writes, prevent dupes/rollbacks, resume interrupted runs according to policy. Mobile and desktop performance; test Brachiosaurus scale/camera/pathing early enough to catch architectural trouble.
-**Gate:** no lost discoveries in recovery tests, no cascading numerical power creep, all creatures have identity and counters.
+## Phase 6 — Narrative and permanent knowledge
+Field agent, communication controller, wild vs implanted opponents, story missions and a **journal of observed species, discovered skills and story notes**. All dinosaur ownership, strength, skills, DNA, gear reset on new runs. **Gate:** save/reload tests, migrations, failures and no journal-based power or undiscovered skill spoilers.
 
-## Phase 7 — Extended story, world polish and optional encounters
-**Implement:** Full island landmarks, quests, story, premium animation quality, sound, additional controlled/wild encounters, Pteranodon and Mosasaurus as non-playable threats/set pieces. Continue encounter variation, **never randomly rebuild the terrain**.
-**Tests:** 30+ complete seeded runs; encounter frequency and difficulty distributions, device performance, game stability, variety of builds, accessibility of dodge/Rest/attack UI on touchscreens.
-**Gate:** replayability comes from choices and outcomes, not forced grinding or cosmetic dice rolls.
+## Phase 7 — Twelve-species content, visual polish and extended replayability
+Paleontology-informed models and animations, more moves, biome details, audio, bosses; Pteranodon and Mosasaurus only as nonplayable threats. **Gate:** full replay runs, mobile/desktop performance, unique species roles, stable encounter generation and accessible UI.
 
-## Metrics worth tracking in consenting playtests
-Stance selection and time; move selection success/miss rate; fight duration; rest timing and stamina wastage; win rate adjusted for species/matchup/skill; loot/reward rate by threat ratio; which dinosaur takes high-value encounters; DNA loadout diversity; reset/restart frequency; which information the scanner changed; spawn placement quality. Do not collect unnecessary personal data.
-
-## Technical note
-Rojo setup documentation: https://rojo.space/docs/ . Roblox Studio docs for client-server security and DataStores: https://create.roblox.com/docs/scripting/security/client-server-boundary and https://create.roblox.com/docs/cloud-services/data-stores . Links are guidance; confirm current tooling when implementation begins.
+## Decisions deliberately deferred
+Final RNG formula/drop distributions; armoring weakspots and special damage types; Parasaurolophus powers; mandatory exploration recruitment safety; DNA-layout transfer on upgrade; journal spoiler boundaries. No one should invent these as finalized values in Phase 1.
